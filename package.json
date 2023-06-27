@@ -1,9 +1,9 @@
 {
   "name": "sd-webui-api",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "description": "A Typescript API client for AUTOMATIC111/stable-diffusion-webui",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "src/index.js",
+  "types": "src/index.d.ts",
   "scripts": {
     "build": "tsc"
   },
@@ -42,7 +42,5 @@
     "sharp": "^0.32.0",
     "string-similarity": "^4.0.4"
   },
-  "files": [
-    "dist"
-  ]
+  "files":  [ "src", "lib" ]
 }
