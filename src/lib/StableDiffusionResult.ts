@@ -1,5 +1,5 @@
 import { AxiosApiRawResponse as StableDiffusionApiRawResponse } from "../types";
-import * as sharp from "sharp";
+import sharp from "sharp";
 
 /**
  * @class StableDiffusionResult
