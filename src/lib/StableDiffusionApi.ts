@@ -166,7 +166,7 @@ export class StableDiffusionApi {
       send_images: options.send_images ?? true,
       save_images: options.save_images ?? false,
       alwayson_scripts:{},
-      sampler_name: options.sampler_name ?? this.config.defaultSampler,
+      sampler_index: options.sampler_name ?? this.config.defaultSampler,
       use_deprecated_controlnet: options.use_deprecated_controlnet ?? false,
     });
     return new StableDiffusionResult(response);
