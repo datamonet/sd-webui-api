@@ -14,8 +14,8 @@ import {
   type Sampler,
   type Progress,
 } from "../types";
-import { type Sharp } from "sharp";
 
+import sharp from 'sharp'
 import axios from "axios";
 import * as stringSimilarity from "string-similarity";
 
@@ -354,7 +354,7 @@ export class StableDiffusionApi {
    * @param {Sharp} image Image to get info from
    * @returns {Promise<StableDiffusionResult>} ApiResult containing the info
    */
-  public async pngInfo(image: Sharp): Promise<StableDiffusionResult> {
+  public async pngInfo(image: sharp.Sharp): Promise<StableDiffusionResult> {
     const image_data = await toBase64(image);
     const response = await this.api.post<ApiRawResponse>("/sdapi/v1/png-info", {
       image: image_data,
@@ -369,7 +369,7 @@ export class StableDiffusionApi {
    * @returns {Promise<StableDiffusionResult>} The result of the interrogation
    */
   public async interrogate(
-    image: Sharp,
+    image: sharp.Sharp,
     model: string
   ): Promise<StableDiffusionResult> {
     const image_data = await toBase64(image);
