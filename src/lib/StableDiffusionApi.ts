@@ -142,7 +142,7 @@ export class StableDiffusionApi {
       subseed_strength: options.subseed_strength ?? 0.0,
       seed_resize_from_h: options.seed_resize_from_h ?? 0,
       seed_resize_from_w: options.seed_resize_from_w ?? 0,
-      batch_size: options.batch_size ?? 1,
+      batch_count: options.batch_count ?? 1,
       n_iter: options.n_iter ?? 1,
       steps: options.steps ?? this.config.defaultStepCount,
       cfg_scale: options.cfg_scale ?? 7.0,

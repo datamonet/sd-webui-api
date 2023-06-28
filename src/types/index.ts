@@ -93,6 +93,7 @@ export type Txt2ImgOptions = {
   seed_resize_from_h?: number;
   seed_resize_from_w?: number;
   batch_size?: number;
+  batch_count?: number;
   n_iter?: number;
   steps?: number;
   cfg_scale?: number;
@@ -141,6 +142,7 @@ export type Img2ImgOptions = {
   seed_resize_from_w?: number;
   sampler_name?: SamplerName;
   batch_size?: number;
+  batch_count?: number;
   n_iter?: number;
   steps?: number;
   cfg_scale?: number;
