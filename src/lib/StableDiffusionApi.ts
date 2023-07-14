@@ -20,20 +20,7 @@ import axios from 'axios';
 import * as stringSimilarity from 'string-similarity';
 
 import StableDiffusionResult from './StableDiffusionResult';
-// import { ControlNetApi } from "./ControlNetApi";
 import { toBase64 } from '../utils/base64';
-// import { ControlNetUnit } from "./ControlNetUnit";
-
-// const createScriptsWithCnUnits = async (
-//   initScripts: {} | undefined,
-//   controlNetUnit: ControlNetUnit[]
-// ) => {
-//   const promises = controlNetUnit.map(async (unit) => await unit.toJson());
-//   const args = await Promise.all(promises);
-//   const ControlNet = { args };
-//   const scripts = { ...initScripts, ControlNet };
-//   return scripts;
-// };
 
 /**
  * @class StableDiffusionApi
