@@ -256,6 +256,14 @@ export type StableDiffusionModel = {
   config: string;
 };
 
+export type StableDiffusionLora = {
+  title: string;
+  alias: string;
+  path: string;
+  metadata:Record<string, unknown>;
+};
+
+
 export type HyperNetwork = {
   name: string;
   path: string;

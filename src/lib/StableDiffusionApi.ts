@@ -12,16 +12,16 @@ import {
   type StableDiffusionModel,
   type Upscaler,
   type Sampler,
-  type Progress,
-} from "../types";
+  type Progress, StableDiffusionLora,
+} from '../types';
 
-import sharp from 'sharp'
-import axios from "axios";
-import * as stringSimilarity from "string-similarity";
+import { type Sharp } from 'sharp';
+import axios from 'axios';
+import * as stringSimilarity from 'string-similarity';
 
-import StableDiffusionResult from "./StableDiffusionResult";
+import StableDiffusionResult from './StableDiffusionResult';
 // import { ControlNetApi } from "./ControlNetApi";
-import { toBase64 } from "../utils/base64";
+import { toBase64 } from '../utils/base64';
 // import { ControlNetUnit } from "./ControlNetUnit";
 
 // const createScriptsWithCnUnits = async (
@@ -62,15 +62,15 @@ export class StableDiffusionApi {
   api;
 
   public constructor({
-    host = "127.0.0.1",
-    port = 7860,
-    protocol = "http",
-    timeout = 30000,
-    baseUrl = null,
-    defaultSampler = "Euler a",
-    defaultStepCount = 20,
-  }: StableDiffusionApiConfig | undefined = {}) {
-    const baseURL = baseUrl || `${protocol}://${host}${port ? `:${port}` : ""}`;
+                       host = '127.0.0.1',
+                       port = 7860,
+                       protocol = 'http',
+                       timeout = 30000,
+                       baseUrl = null,
+                       defaultSampler = 'Euler a',
+                       defaultStepCount = 20,
+                     }: StableDiffusionApiConfig | undefined = {}) {
+    const baseURL = baseUrl || `${protocol}://${host}${port ? `:${port}` : ''}`;
 
     this.config = {
       host,
@@ -86,7 +86,7 @@ export class StableDiffusionApi {
       baseURL,
       timeout,
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
     });
   }
@@ -118,24 +118,24 @@ export class StableDiffusionApi {
    * });
    */
   public async txt2img(
-    options: Txt2ImgOptions
+    options: Txt2ImgOptions,
   ): Promise<StableDiffusionResult> {
     // const alwayson_scripts = await createScriptsWithCnUnits(
     //   options.alwayson_scripts,
     //   options.controlnet_units ?? []
     // );
 
-    const response = await this.api.post<ApiRawResponse>("/sdapi/v1/txt2img", {
+    const response = await this.api.post<ApiRawResponse>('/sdapi/v1/txt2img', {
       enable_hr: options.enable_hr ?? false,
       hr_scale: options.hr_scale ?? 2,
-      hr_upscaler: options.hr_upscaler ?? "Latent",
+      hr_upscaler: options.hr_upscaler ?? 'Latent',
       hr_second_pass_steps: options.hr_second_pass_steps ?? 0,
       hr_resize_x: options.hr_resize_x ?? 0,
       hr_resize_y: options.hr_resize_y ?? 0,
       denoising_strength: options.denoising_strength ?? 0.7,
       firstphase_width: options.firstphase_width ?? 0,
       firstphase_height: options.firstphase_height ?? 0,
-      prompt: options.prompt ?? "",
+      prompt: options.prompt ?? '',
       styles: options.styles ?? [],
       seed: options.seed ?? -1,
       subseed: options.subseed ?? -1,
@@ -153,7 +153,7 @@ export class StableDiffusionApi {
       tiling: options.tiling ?? false,
       do_not_save_samples: options.do_not_save_samples ?? false,
       do_not_save_grid: options.do_not_save_grid ?? false,
-      negative_prompt: options.negative_prompt ?? "",
+      negative_prompt: options.negative_prompt ?? '',
       eta: options.eta ?? 1.0,
       s_churn: options.s_churn ?? 0,
       s_tmax: options.s_tmax ?? 0,
@@ -166,7 +166,7 @@ export class StableDiffusionApi {
       script_name: options.script_name ?? null,
       send_images: options.send_images ?? true,
       save_images: options.save_images ?? false,
-      alwayson_scripts:{},
+      alwayson_scripts: {},
       sampler_index: options.sampler_name ?? this.config.defaultSampler,
       use_deprecated_controlnet: options.use_deprecated_controlnet ?? false,
     });
@@ -188,10 +188,10 @@ export class StableDiffusionApi {
    * });
    */
   public async img2img(
-    options: Img2ImgOptions
+    options: Img2ImgOptions,
   ): Promise<StableDiffusionResult> {
     const init_images = await Promise.all(
-      options.init_images.map(async (image) => await toBase64(image))
+      options.init_images.map(async (image) => await toBase64(image)),
     );
 
     const mask = options.mask_image ? await toBase64(options.mask_image) : null;
@@ -201,7 +201,7 @@ export class StableDiffusionApi {
     //   options.controlnet_units ?? []
     // );
 
-    const response = await this.api.post<ApiRawResponse>("/sdapi/v1/img2img", {
+    const response = await this.api.post<ApiRawResponse>('/sdapi/v1/img2img', {
       init_images,
       resize_mode: options.resize_mode ?? 0,
       denoising_strength: options.denoising_strength ?? 0.75,
@@ -213,7 +213,7 @@ export class StableDiffusionApi {
       inpaint_full_res_padding: options.inpaint_full_res_padding ?? 0,
       inpainting_mask_invert: options.inpainting_mask_invert ?? 0,
       initial_noise_multiplier: options.initial_noise_multiplier ?? 1,
-      prompt: options.prompt ?? "",
+      prompt: options.prompt ?? '',
       styles: options.styles ?? [],
       seed: options.seed ?? -1,
       subseed: options.subseed ?? -1,
@@ -231,7 +231,7 @@ export class StableDiffusionApi {
       tiling: options.tiling ?? false,
       do_not_save_samples: options.do_not_save_samples ?? false,
       do_not_save_grid: options.do_not_save_grid ?? false,
-      negative_prompt: options.negative_prompt ?? "",
+      negative_prompt: options.negative_prompt ?? '',
       eta: options.eta ?? 1.0,
       s_churn: options.s_churn ?? 0,
       s_tmax: options.s_tmax ?? 0,
@@ -245,7 +245,7 @@ export class StableDiffusionApi {
       script_name: options.script_name ?? null,
       send_images: options.send_images ?? true,
       save_images: options.save_images ?? false,
-      alwayson_scripts:{},
+      alwayson_scripts: {},
       use_deprecated_controlnet: options.use_deprecated_controlnet ?? false,
     });
     return new StableDiffusionResult(response);
@@ -267,11 +267,11 @@ export class StableDiffusionApi {
    * });
    */
   public async extraSingle(
-    options: ExtraSingleOptions
+    options: ExtraSingleOptions,
   ): Promise<StableDiffusionResult> {
     const image = await toBase64(options.image);
     const response = await this.api.post<ApiRawResponse>(
-      "/sdapi/v1/extra-single-image",
+      '/sdapi/v1/extra-single-image',
       {
         image,
         resize_mode: options.resize_mode ?? 0,
@@ -282,11 +282,11 @@ export class StableDiffusionApi {
         upscaling_resize_w: options.upscaling_resize_w ?? 512,
         upscaling_resize_h: options.upscaling_resize_h ?? 512,
         upscaling_resize_crop: options.upscaling_resize_crop ?? true,
-        upscaler_1: options.upscaler_1 ?? "None",
-        upscaler_2: options.upscaler_2 ?? "None",
+        upscaler_1: options.upscaler_1 ?? 'None',
+        upscaler_2: options.upscaler_2 ?? 'None',
         extras_upscaler_2_visibility: options.extras_upscaler_2_visibility ?? 0,
         upscale_first: options.upscale_first ?? false,
-      }
+      },
     );
     return new StableDiffusionResult(response);
   }
@@ -309,16 +309,16 @@ export class StableDiffusionApi {
    * });
    */
   public async extraBatch(
-    options: ExtraBatchOptions
+    options: ExtraBatchOptions,
   ): Promise<StableDiffusionResult> {
     if (options.images.length !== options.name_list.length) {
       throw new Error(
-        "The number of images and names must be the same in extraBatch"
+        'The number of images and names must be the same in extraBatch',
       );
     }
 
     const images = await Promise.all(
-      options.images.map(async (image) => await toBase64(image))
+      options.images.map(async (image) => await toBase64(image)),
     );
 
     const image_list = images.map((image, index) => {
@@ -329,7 +329,7 @@ export class StableDiffusionApi {
     });
 
     const response = await this.api.post<ApiRawResponse>(
-      "/sdapi/v1/extra-batch-images",
+      '/sdapi/v1/extra-batch-images',
       {
         image_list,
         resize_mode: options.resize_mode ?? 0,
@@ -340,11 +340,11 @@ export class StableDiffusionApi {
         upscaling_resize_w: options.upscaling_resize_w ?? 512,
         upscaling_resize_h: options.upscaling_resize_h ?? 512,
         upscaling_resize_crop: options.upscaling_resize_crop ?? true,
-        upscaler_1: options.upscaler_1 ?? "None",
-        upscaler_2: options.upscaler_2 ?? "None",
+        upscaler_1: options.upscaler_1 ?? 'None',
+        upscaler_2: options.upscaler_2 ?? 'None',
         extras_upscaler_2_visibility: options.extras_upscaler_2_visibility ?? 0,
         upscale_first: options.upscale_first ?? false,
-      }
+      },
     );
     return new StableDiffusionResult(response);
   }
@@ -354,10 +354,10 @@ export class StableDiffusionApi {
    * @param {Sharp} image Image to get info from
    * @returns {Promise<StableDiffusionResult>} ApiResult containing the info
    */
-  public async pngInfo(image: sharp.Sharp): Promise<StableDiffusionResult> {
-    const image_data = await toBase64(image);
-    const response = await this.api.post<ApiRawResponse>("/sdapi/v1/png-info", {
-      image: image_data,
+  public async pngInfo(image: string): Promise<StableDiffusionResult> {
+    // const image_data = await toBase64(image);
+    const response = await this.api.post<ApiRawResponse>('/sdapi/v1/png-info', {
+      image: image,
     });
     return new StableDiffusionResult(response);
   }
@@ -369,26 +369,26 @@ export class StableDiffusionApi {
    * @returns {Promise<StableDiffusionResult>} The result of the interrogation
    */
   public async interrogate(
-    image: sharp.Sharp,
-    model: string
+    image: Sharp,
+    model: string,
   ): Promise<StableDiffusionResult> {
     const image_data = await toBase64(image);
     const response = await this.api.post<ApiRawResponse>(
-      "/sdapi/v1/interrogate",
+      '/sdapi/v1/interrogate',
       {
         image: image_data,
-      }
+      },
     );
     return new StableDiffusionResult(response);
   }
 
   public async getOptions() {
-    const response = await this.api.get("/sdapi/v1/options");
+    const response = await this.api.get('/sdapi/v1/options');
     return response.data;
   }
 
   public async setOptions(options: any) {
-    const response = await this.api.post("/sdapi/v1/options", options);
+    const response = await this.api.post('/sdapi/v1/options', options);
     return response.data;
   }
 
@@ -398,10 +398,10 @@ export class StableDiffusionApi {
    * @returns {Promise<Progress>} The progress status of the current session
    */
   public async getProgress(
-    skipCurrentImage: boolean = false
+    skipCurrentImage: boolean = false,
   ): Promise<Progress> {
     const response = await this.api.get<Progress>(
-      `/sdapi/v1/progress?skipCurrentImage=${skipCurrentImage}`
+      `/sdapi/v1/progress?skipCurrentImage=${skipCurrentImage}`,
     );
     return response.data;
   }
@@ -412,7 +412,7 @@ export class StableDiffusionApi {
    */
   public async getCmdFlags(): Promise<Record<string, unknown>> {
     const response = await this.api.get<Record<string, unknown>>(
-      "/sdapi/v1/cmd-flags"
+      '/sdapi/v1/cmd-flags',
     );
     return response.data;
   }
@@ -422,7 +422,7 @@ export class StableDiffusionApi {
    * @returns {Promise<Sampler[]>} The list of samplers
    */
   public async getSamplers(): Promise<Sampler[]> {
-    const response = await this.api.get<Sampler[]>("/sdapi/v1/samplers");
+    const response = await this.api.get<Sampler[]>('/sdapi/v1/samplers');
     return response.data;
   }
 
@@ -431,7 +431,7 @@ export class StableDiffusionApi {
    * @returns {Promise<Upscaler[]>} The list of upscalers
    */
   public async getUpscalers(): Promise<Upscaler[]> {
-    const response = await this.api.get<Upscaler[]>("/sdapi/v1/upscalers");
+    const response = await this.api.get<Upscaler[]>('/sdapi/v1/upscalers');
     return response.data;
   }
 
@@ -441,7 +441,18 @@ export class StableDiffusionApi {
    */
   public async getSdModels(): Promise<StableDiffusionModel[]> {
     const response = await this.api.get<StableDiffusionModel[]>(
-      "/sdapi/v1/sd-models"
+      '/sdapi/v1/sd-models',
+    );
+    return response.data;
+  }
+
+  /**
+   * Gets the list of Stable Diffusion models
+   * @returns {Promise<StableDiffusionModel[]>} The list of Stable Diffusion models
+   */
+  public async getSdLoras(): Promise<StableDiffusionLora[]> {
+    const response = await this.api.get<StableDiffusionLora[]>(
+      "/sdapi/v1/loras"
     );
     return response.data;
   }
@@ -452,7 +463,7 @@ export class StableDiffusionApi {
    */
   public async getHypernetworks(): Promise<HyperNetwork[]> {
     const response = await this.api.get<HyperNetwork[]>(
-      "/sdapi/v1/hypernetworks"
+      '/sdapi/v1/hypernetworks',
     );
     return response.data;
   }
@@ -463,7 +474,7 @@ export class StableDiffusionApi {
    */
   public async getFaceRestorers(): Promise<FaceRestorer[]> {
     const response = await this.api.get<FaceRestorer[]>(
-      "/sdapi/v1/face-restorers"
+      '/sdapi/v1/face-restorers',
     );
     return response.data;
   }
@@ -474,7 +485,7 @@ export class StableDiffusionApi {
    */
   public async getRealesrganModels(): Promise<RealESRGanModel[]> {
     const response = await this.api.get<RealESRGanModel[]>(
-      "/sdapi/v1/realesrgan-models"
+      '/sdapi/v1/realesrgan-models',
     );
     return response.data;
   }
@@ -485,7 +496,7 @@ export class StableDiffusionApi {
    */
   public async getPromptStyles(): Promise<PromptStyle[]> {
     const response = await this.api.get<PromptStyle[]>(
-      "/sdapi/v1/prompt-styles"
+      '/sdapi/v1/prompt-styles',
     );
     return response.data;
   }
@@ -495,7 +506,7 @@ export class StableDiffusionApi {
    * @returns {Promise<void>}
    */
   public async refreshCheckpoints(): Promise<void> {
-    await this.api.post("/sdapi/v1/refresh-checkpoints");
+    await this.api.post('/sdapi/v1/refresh-checkpoints');
   }
 
   /**
@@ -515,7 +526,7 @@ export class StableDiffusionApi {
    */
   public async setModel(
     name: string,
-    findClosest: boolean = true
+    findClosest: boolean = true,
   ): Promise<void> {
     const models = await this.getSdModels();
     const modelNames = models.map((model: any) => model.name);
@@ -538,7 +549,7 @@ export class StableDiffusionApi {
       };
       await this.setOptions(options);
     } else {
-      throw new Error("Model not found");
+      throw new Error('Model not found');
     }
   }
 
@@ -559,7 +570,7 @@ export class StableDiffusionApi {
           resolve(true);
         } else {
           console.log(
-            `[WAIT]: progress = ${progress.toFixed(4)}, job_count = ${jobCount}`
+            `[WAIT]: progress = ${progress.toFixed(4)}, job_count = ${jobCount}`,
           );
         }
       }, checkInterval * 1000);
