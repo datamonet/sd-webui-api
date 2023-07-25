@@ -15,12 +15,28 @@ import {
   type Progress, StableDiffusionLora,
 } from '../types';
 
-import { type Sharp } from 'sharp';
-import axios from 'axios';
-import * as stringSimilarity from 'string-similarity';
+import { type Sharp } from "sharp";
 
-import StableDiffusionResult from './StableDiffusionResult';
-import { toBase64 } from '../utils/base64';
+import axios from "axios";
+import stringSimilarity from "string-similarity";
+
+import StableDiffusionResult from "./StableDiffusionResult";
+import { ControlNetApi } from "./ControlNetApi";
+import { toBase64 } from "../utils/base64";
+import { ControlNetUnit } from "./ControlNetUnit";
+
+
+const createScriptsWithCnUnits = async (
+  initScripts: {} | undefined,
+  controlNetUnit: ControlNetUnit[]
+) => {
+  const promises = controlNetUnit.map(async (unit) => await unit.toJson());
+  const args = await Promise.all(promises);
+  const ControlNet = { args };
+  const scripts = { ...initScripts, ControlNet };
+  return scripts;
+};
+
 
 /**
  * @class StableDiffusionApi
@@ -107,10 +123,10 @@ export class StableDiffusionApi {
   public async txt2img(
     options: Txt2ImgOptions,
   ): Promise<StableDiffusionResult> {
-    // const alwayson_scripts = await createScriptsWithCnUnits(
-    //   options.alwayson_scripts,
-    //   options.controlnet_units ?? []
-    // );
+    const alwayson_scripts = await createScriptsWithCnUnits(
+      options.alwayson_scripts,
+      options.controlnet_units ?? []
+    );
 
     const response = await this.api.post<ApiRawResponse>('/sdapi/v1/txt2img', {
       enable_hr: options.enable_hr ?? false,
@@ -341,14 +357,13 @@ export class StableDiffusionApi {
    * @param {Sharp} image Image to get info from
    * @returns {Promise<StableDiffusionResult>} ApiResult containing the info
    */
-  public async pngInfo(image: string): Promise<StableDiffusionResult> {
-    // const image_data = await toBase64(image);
-    const response = await this.api.post<ApiRawResponse>('/sdapi/v1/png-info', {
-      image: image,
+  public async pngInfo(image: Sharp): Promise<StableDiffusionResult> {
+    const image_data = await toBase64(image);
+    const response = await this.api.post<ApiRawResponse>("/sdapi/v1/png-info", {
+      image: image_data,
     });
     return new StableDiffusionResult(response);
   }
-
   /**
    * Interrogates an image with an interrogation model
    * @param {Sharp} image Image to interrogate
@@ -564,5 +579,5 @@ export class StableDiffusionApi {
     });
   }
 
-  // public ControlNet = new ControlNetApi(this);
+  public ControlNet = new ControlNetApi(this);
 }
