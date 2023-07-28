@@ -169,7 +169,7 @@ export class StableDiffusionApi {
       script_name: options.script_name ?? null,
       send_images: options.send_images ?? true,
       save_images: options.save_images ?? false,
-      alwayson_scripts: {},
+      alwayson_scripts,
       sampler_index: options.sampler_name ?? this.config.defaultSampler,
       use_deprecated_controlnet: options.use_deprecated_controlnet ?? false,
     });
