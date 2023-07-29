@@ -1,5 +1,5 @@
 ## About
-A Typescript API client for AUTOMATIC111/stable-diffusion-webui.
+A Typescript API client for [AUTOMATIC111/stable-diffusion-webui](https://github.com/AUTOMATIC1111/stable-diffusion-webui).
 
 ## Installation
 
@@ -8,27 +8,27 @@ npm install sd-webui-api
 ```
 
 ```bash
-yarn add ad-webui-api
+yarn add sd-webui-api
 ```
 
 ## Usage
 
-### Instantiation
+### SD WebUI API Backend
 
-If you don't have a WebUI api available, you can start a WebUI locally, see [Deploy WebUI Doc](https://harrywang.me/diffusion)
+You need to have a SD WebUI API backend to use this package. Check out [SD WebUI API Doc](https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/API) to start a local API backend first and the default URL for API endpoint is: http://127.0.0.1:7860
 
-**Note: Please enable api mode**
+Simple initialization with all default settings:
 
 ```typescript
-const api = new StableDiffusionApi() // The default url for this type of initialization is http://127.0.0.1:7860
-
 const api = new StableDiffusionApi({
   baseUrl: 'http://127.0.0.1:7860', // or other WebUI url
 })
+```
+Initialization with custom parameters:
 
-//If you need custom parameters, you can initialize them this way
+```typescript
 const api = new StableDiffusionApi({
-  host: "localhost",
+  host: "http://127.0.0.1:7860",
   port: 7860,
   protocol: "http",
   defaultSampler: "Euler a",
@@ -48,11 +48,10 @@ api.setAuth("username", "password")
 
 ```typescript
 const result = await api.txt2img({
-    prompt: "Serene beach scene with crystal clear water and white sand, tropical palm trees swaying in the breeze, perfect paradise, seascape",
+    prompt: "a black cat",
     ...
 })
 ```
-
 
 ### img2img
 
