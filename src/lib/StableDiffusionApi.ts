@@ -460,6 +460,17 @@ export class StableDiffusionApi {
   }
 
   /**
+   * Gets the list of Stable Diffusion models
+   * @returns {Promise<StableDiffusionModel[]>} The list of Stable Diffusion models
+   */
+  public async getSdVae(): Promise<StableDiffusionLora[]> {
+    const response = await this.api.get<StableDiffusionLora[]>(
+      "/sdapi/v1/sd-vae"
+    );
+    return response.data;
+  }
+
+  /**
    * Gets the list of hypernetworks
    * @returns {Promise<HyperNetwork[]>} The list of hypernetworks
    */
