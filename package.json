@@ -1,6 +1,6 @@
 {
   "name": "sd-webui-api",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "description": "A Typescript API client for AUTOMATIC111/stable-diffusion-webui",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
