@@ -15,20 +15,21 @@ import {
   type Progress, StableDiffusionLora,
 } from '../types';
 
-import { type Sharp } from "sharp";
+import { type Sharp } from 'sharp';
 
-import axios from "axios";
-import stringSimilarity from "string-similarity";
+import axios from 'axios';
+import stringSimilarity from 'string-similarity';
 
-import StableDiffusionResult from "./StableDiffusionResult";
-import { ControlNetApi } from "./ControlNetApi";
-import { toBase64 } from "../utils/base64";
-import { ControlNetUnit } from "./ControlNetUnit";
+import StableDiffusionResult from './StableDiffusionResult';
+import { ControlNetApi } from './ControlNetApi';
+import { toBase64 } from '../utils/base64';
+import { ControlNetUnit } from './ControlNetUnit';
+import { AgentSchedulerApi } from './AgentSchedulerApi';
 
 
-const createScriptsWithCnUnits = async (
+export const createScriptsWithCnUnits = async (
   initScripts: {} | undefined,
-  controlNetUnit: ControlNetUnit[]
+  controlNetUnit: ControlNetUnit[],
 ) => {
   const promises = controlNetUnit.map(async (unit) => await unit.toJson());
   const args = await Promise.all(promises);
@@ -125,7 +126,7 @@ export class StableDiffusionApi {
   ): Promise<StableDiffusionResult> {
     const alwayson_scripts = await createScriptsWithCnUnits(
       options.alwayson_scripts,
-      options.controlnet_units ?? []
+      options.controlnet_units ?? [],
     );
 
     const response = await this.api.post<ApiRawResponse>('/sdapi/v1/txt2img', {
@@ -199,10 +200,10 @@ export class StableDiffusionApi {
 
     const mask = options.mask_image ? await toBase64(options.mask_image) : null;
 
-    // const alwayson_scripts = await createScriptsWithCnUnits(
-    //   options.alwayson_scripts,
-    //   options.controlnet_units ?? []
-    // );
+    const alwayson_scripts = await createScriptsWithCnUnits(
+      options.alwayson_scripts,
+      options.controlnet_units ?? []
+    );
 
     const response = await this.api.post<ApiRawResponse>('/sdapi/v1/img2img', {
       init_images,
@@ -248,7 +249,7 @@ export class StableDiffusionApi {
       script_name: options.script_name ?? null,
       send_images: options.send_images ?? true,
       save_images: options.save_images ?? false,
-      alwayson_scripts: {},
+      alwayson_scripts,
       use_deprecated_controlnet: options.use_deprecated_controlnet ?? false,
     });
     return new StableDiffusionResult(response);
@@ -359,11 +360,12 @@ export class StableDiffusionApi {
    */
   public async pngInfo(image: Sharp): Promise<StableDiffusionResult> {
     const image_data = await toBase64(image);
-    const response = await this.api.post<ApiRawResponse>("/sdapi/v1/png-info", {
+    const response = await this.api.post<ApiRawResponse>('/sdapi/v1/png-info', {
       image: image_data,
     });
     return new StableDiffusionResult(response);
   }
+
   /**
    * Interrogates an image with an interrogation model
    * @param {Sharp} image Image to interrogate
@@ -454,7 +456,7 @@ export class StableDiffusionApi {
    */
   public async getSdLoras(): Promise<StableDiffusionLora[]> {
     const response = await this.api.get<StableDiffusionLora[]>(
-      "/sdapi/v1/loras"
+      '/sdapi/v1/loras',
     );
     return response.data;
   }
@@ -465,7 +467,7 @@ export class StableDiffusionApi {
    */
   public async getSdVae(): Promise<StableDiffusionLora[]> {
     const response = await this.api.get<StableDiffusionLora[]>(
-      "/sdapi/v1/sd-vae"
+      '/sdapi/v1/sd-vae',
     );
     return response.data;
   }
@@ -591,4 +593,5 @@ export class StableDiffusionApi {
   }
 
   public ControlNet = new ControlNetApi(this);
+  public AgentScheduler = new AgentSchedulerApi(this);
 }

@@ -1,28 +1,28 @@
-import { AxiosResponse } from "axios";
-import { ControlNetUnit } from "../lib/ControlNetUnit";
-import { type Sharp } from "sharp";
+import { AxiosResponse } from 'axios';
+import { ControlNetUnit } from '../lib/ControlNetUnit';
+import { type Sharp } from 'sharp';
 
 export type SamplerName =
-  | "Euler a"
-  | "Euler"
-  | "LMS"
-  | "Heun"
-  | "DPM2"
-  | "DPM2 a"
-  | "DPM++ 2S a"
-  | "DPM++ 2M"
-  | "DPM++ SDE"
-  | "DPM fast"
-  | "DPM adaptive"
-  | "LMS Karras"
-  | "DPM2 Karras"
-  | "DPM2 a Karras"
-  | "DPM++ 2S a Karras"
-  | "DPM++ 2M Karras"
-  | "DPM++ SDE Karras"
-  | "DDIM"
-  | "PLMS"
-  | "UniPC"
+  | 'Euler a'
+  | 'Euler'
+  | 'LMS'
+  | 'Heun'
+  | 'DPM2'
+  | 'DPM2 a'
+  | 'DPM++ 2S a'
+  | 'DPM++ 2M'
+  | 'DPM++ SDE'
+  | 'DPM fast'
+  | 'DPM adaptive'
+  | 'LMS Karras'
+  | 'DPM2 Karras'
+  | 'DPM2 a Karras'
+  | 'DPM++ 2S a Karras'
+  | 'DPM++ 2M Karras'
+  | 'DPM++ SDE Karras'
+  | 'DDIM'
+  | 'PLMS'
+  | 'UniPC'
   | string;
 
 export type StableDiffusionApiConfig = {
@@ -32,7 +32,7 @@ export type StableDiffusionApiConfig = {
   timeout?: number;
   defaultSampler?: SamplerName;
   defaultStepCount?: number;
-  protocol?: "http" | "https";
+  protocol?: 'http' | 'https';
 };
 
 export type ApiRawResponse = {
@@ -46,33 +46,33 @@ export type ApiRawResponse = {
 export type AxiosApiRawResponse = AxiosResponse<ApiRawResponse>;
 
 export type UpscalerName =
-  | "None"
-  | "Lanczos"
-  | "Nearest"
-  | "LDSR"
-  | "BSRGAN"
-  | "ESRGAN_4x"
-  | "R-ESRGAN General 4xV3"
-  | "ScuNET GAN"
-  | "ScuNET PSNR"
-  | "SwinIR 4x"
+  | 'None'
+  | 'Lanczos'
+  | 'Nearest'
+  | 'LDSR'
+  | 'BSRGAN'
+  | 'ESRGAN_4x'
+  | 'R-ESRGAN General 4xV3'
+  | 'ScuNET GAN'
+  | 'ScuNET PSNR'
+  | 'SwinIR 4x'
   | string;
 
 export type HiResUpscalerName =
-  | "None"
-  | "Latent"
-  | "Latent (antialiased)"
-  | "Latent (bicubic)"
-  | "Latent (bicubic antialiased)"
-  | "Latent (nearist)"
-  | "Latent (nearist-exact)"
-  | "Lanczos"
-  | "Nearest"
-  | "ESRGAN_4x"
-  | "LDSR"
-  | "ScuNET GAN"
-  | "ScuNET PSNR"
-  | "SwinIR 4x"
+  | 'None'
+  | 'Latent'
+  | 'Latent (antialiased)'
+  | 'Latent (bicubic)'
+  | 'Latent (bicubic antialiased)'
+  | 'Latent (nearist)'
+  | 'Latent (nearist-exact)'
+  | 'Lanczos'
+  | 'Nearest'
+  | 'ESRGAN_4x'
+  | 'LDSR'
+  | 'ScuNET GAN'
+  | 'ScuNET PSNR'
+  | 'SwinIR 4x'
   | string;
 
 export type Txt2ImgOptions = {
@@ -120,6 +120,11 @@ export type Txt2ImgOptions = {
   sampler_name?: SamplerName;
   use_deprecated_controlnet?: boolean;
 };
+
+export type AgentSchedulerTxt2ImgOptions = Txt2ImgOptions & {
+  checkpoint: string,
+  callback_url: string
+}
 
 export type Img2ImgOptions = {
   init_images: Sharp[];
@@ -170,6 +175,16 @@ export type Img2ImgOptions = {
   use_deprecated_controlnet?: boolean;
 };
 
+export type AgentSchedulerImg2ImgOptions = Img2ImgOptions & {
+  checkpoint: string,
+  callback_url: string
+}
+
+export type AgentSchedulerResponse = {
+  success: boolean,
+  data: { image: string, infotext: string }[]
+}
+
 export type ExtraBaseOptions = {
   image: Sharp;
   resize_mode?: number;
@@ -196,25 +211,25 @@ export type ExtraBatchOptions = {
 } & ExtraBaseOptions;
 
 type ControlNetModule =
-  | "none"
-  | "canny"
-  | "depth"
-  | "depth_leres"
-  | "hed"
-  | "mlsd"
-  | "normal_map"
-  | "openpose"
-  | "openpose_hand"
-  | "clip_vision"
-  | "color"
-  | "pidinet"
-  | "scribble"
-  | "fake_scribble"
-  | "segmentation"
-  | "binary"
+  | 'none'
+  | 'canny'
+  | 'depth'
+  | 'depth_leres'
+  | 'hed'
+  | 'mlsd'
+  | 'normal_map'
+  | 'openpose'
+  | 'openpose_hand'
+  | 'clip_vision'
+  | 'color'
+  | 'pidinet'
+  | 'scribble'
+  | 'fake_scribble'
+  | 'segmentation'
+  | 'binary'
   | string;
 
-export type ResizeMode = "Scale to Fit (Inner Fit)";
+export type ResizeMode = 'Scale to Fit (Inner Fit)';
 
 export type Progress = {
   progress: number;
@@ -260,7 +275,7 @@ export type StableDiffusionLora = {
   title: string;
   alias: string;
   path: string;
-  metadata:Record<string, unknown>;
+  metadata: Record<string, unknown>;
 };
 
 
