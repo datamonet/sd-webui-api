@@ -62,8 +62,8 @@ export class AgentSchedulerApi {
       alwayson_scripts,
       sampler_index: options.sampler_name ?? this.sd.config.defaultSampler,
       use_deprecated_controlnet: options.use_deprecated_controlnet ?? false,
-      checkpoint: options.checkpoint ?? '',
-      callback_url: options.callback_url ?? '',
+      checkpoint: options.checkpoint ?? null,
+      callback_url: options.callback_url ?? null
     });
     return response.data;
   }
@@ -128,6 +128,8 @@ export class AgentSchedulerApi {
       save_images: options.save_images ?? false,
       alwayson_scripts,
       use_deprecated_controlnet: options.use_deprecated_controlnet ?? false,
+      checkpoint: options.checkpoint ?? null,
+      callback_url: options.callback_url ?? null
     });
     return response.data;
   }
