@@ -165,7 +165,7 @@ export type Img2ImgOptions = {
   s_noise?: number;
   override_settings?: {};
   override_settings_restore_afterwards?: boolean;
-  script_args?: [];
+  script_args?: unknown[];
   include_init_images?: boolean;
   script_name?: string;
   send_images?: boolean;
