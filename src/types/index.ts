@@ -122,8 +122,8 @@ export type Txt2ImgOptions = {
 };
 
 export type AgentSchedulerTxt2ImgOptions = Txt2ImgOptions & {
-  checkpoint: string,
-  callback_url: string
+  checkpoint?: string,
+  callback_url?: string
 }
 
 export type Img2ImgOptions = {
@@ -176,8 +176,8 @@ export type Img2ImgOptions = {
 };
 
 export type AgentSchedulerImg2ImgOptions = Img2ImgOptions & {
-  checkpoint: string,
-  callback_url: string
+  checkpoint?: string,
+  callback_url?: string
 }
 
 export type AgentSchedulerResponse = {
