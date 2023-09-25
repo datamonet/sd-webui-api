@@ -1,5 +1,5 @@
 import {
-  AgentSchedulerImg2ImgOptions, AgentSchedulerResponse,
+  AgentSchedulerImg2ImgOptions, AgentSchedulerQueueResponse, AgentSchedulerResponse,
   AgentSchedulerTxt2ImgOptions,
 } from '../types';
 import { toBase64 } from '../utils/base64';
@@ -63,7 +63,7 @@ export class AgentSchedulerApi {
       sampler_index: options.sampler_name ?? this.sd.config.defaultSampler,
       use_deprecated_controlnet: options.use_deprecated_controlnet ?? false,
       checkpoint: options.checkpoint ?? null,
-      callback_url: options.callback_url ?? null
+      callback_url: options.callback_url ?? null,
     });
     return response.data;
   }
@@ -129,7 +129,7 @@ export class AgentSchedulerApi {
       alwayson_scripts,
       use_deprecated_controlnet: options.use_deprecated_controlnet ?? false,
       checkpoint: options.checkpoint ?? null,
-      callback_url: options.callback_url ?? null
+      callback_url: options.callback_url ?? null,
     });
     return response.data;
   }
@@ -142,4 +142,15 @@ export class AgentSchedulerApi {
     );
     return response.data;
   }
+
+  public async getQueue(
+    limit: number,
+    offset: number,
+  ): Promise<AgentSchedulerQueueResponse> {
+    const response = await this.sd.api.get<AgentSchedulerQueueResponse>(
+      `/agent-scheduler/v1/queue?limit=${limit}&offset=${offset}`,
+    );
+    return response.data;
+  }
+
 }

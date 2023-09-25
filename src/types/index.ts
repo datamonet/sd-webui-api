@@ -185,6 +185,26 @@ export type AgentSchedulerResponse = {
   data: { image: string, infotext: string }[]
 }
 
+
+export type AgentSchedulerQueueResponse = {
+  current_task_id: string,
+  pending_tasks: {
+    id: string,
+    api_task_id: string,
+    api_task_callback: string,
+    name: string,
+    type: string,
+    status: string,
+    params: Record<any, any>,
+    created_at: string,
+    updated_at: string,
+  }[],
+  total_pending_tasks: number,
+  paused: boolean
+
+}
+
+
 export type ExtraBaseOptions = {
   image: Sharp;
   resize_mode?: number;
