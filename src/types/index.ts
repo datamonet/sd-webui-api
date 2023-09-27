@@ -185,6 +185,25 @@ export type AgentSchedulerResponse = {
   data: { image: string, infotext: string }[]
 }
 
+export type AgentSchedulerTaskResponse = {
+  success: boolean;
+  data: {
+    id: string;
+    api_task_id: string | null;
+    api_task_callback: string;
+    name: string | null;
+    type: string;
+    status: 'pending' | 'running' | 'done' | 'failed';
+    params: AgentSchedulerTxt2ImgOptions | AgentSchedulerImg2ImgOptions;
+    priority: number;
+    position: string | null;
+    result: string;
+    bookmarked: string | null;
+    created_at: string;
+    updated_at: string;
+  };
+};
+
 
 export type AgentSchedulerQueueResponse = {
   current_task_id: string,
