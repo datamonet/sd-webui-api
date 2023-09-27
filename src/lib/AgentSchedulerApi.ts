@@ -1,5 +1,6 @@
 import {
   AgentSchedulerImg2ImgOptions, AgentSchedulerQueueResponse, AgentSchedulerResponse,
+  AgentSchedulerTaskResponse,
   AgentSchedulerTxt2ImgOptions,
 } from '../types';
 import { toBase64 } from '../utils/base64';
@@ -139,6 +140,15 @@ export class AgentSchedulerApi {
   ): Promise<AgentSchedulerResponse> {
     const response = await this.sd.api.get<AgentSchedulerResponse>(
       `/agent-scheduler/v1/task/${id}/results`,
+    );
+    return response.data;
+  }
+
+  public async getTask(
+    id: string,
+  ): Promise<AgentSchedulerTaskResponse> {
+    const response = await this.sd.api.get<AgentSchedulerTaskResponse>(
+      `/agent-scheduler/v1/task/${id}`,
     );
     return response.data;
   }
