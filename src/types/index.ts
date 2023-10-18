@@ -222,6 +222,13 @@ export type AgentSchedulerQueueResponse = {
   paused: boolean
 
 }
+export type AgentSchedulerQueuePosition = {
+    success: boolean,
+    data: {
+      status: string,
+      position: null | number
+    }
+  }
 
 
 export type ExtraBaseOptions = {

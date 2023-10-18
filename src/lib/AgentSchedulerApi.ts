@@ -1,5 +1,5 @@
 import {
-  AgentSchedulerImg2ImgOptions, AgentSchedulerQueueResponse, AgentSchedulerResponse,
+  AgentSchedulerImg2ImgOptions, AgentSchedulerQueuePosition, AgentSchedulerQueueResponse, AgentSchedulerResponse,
   AgentSchedulerTaskResponse,
   AgentSchedulerTxt2ImgOptions,
 } from '../types';
@@ -163,4 +163,12 @@ export class AgentSchedulerApi {
     return response.data;
   }
 
+  public async getPosition(
+    id: string,
+  ): Promise<AgentSchedulerQueuePosition> {
+    const response = await this.sd.api.get<AgentSchedulerQueuePosition>(
+      `/agent-scheduler/v1/task/${id}/position`,
+    );
+    return response.data;
+  }
 }
